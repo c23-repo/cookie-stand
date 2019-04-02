@@ -1,6 +1,6 @@
 'use strict';
 
-var hours = [600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000];
+var hours = ['0600hrs', '0700hrs', '0800hrs', '0900hrs', '1000hrs', '1100hrs', '1200hrs', '1300hrs', '1400hrs', '1500hrs', '1600hrs', '1700hrs', '1800hrs', '1900hrs', '2000hrs'];
 var customers = {
   store: '1st and Pike',
   minCustHr: 23,
@@ -60,11 +60,6 @@ customers.render();
  
 console.log(customers);
 
-
-// console.log(customers.randomizer());
-
-
-// console.log(customers.hourRandomizer());
 
 // // SeaTac Airport
 
