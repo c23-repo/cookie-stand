@@ -40,7 +40,7 @@ customers.randomizer();
 customers.hourRandomizer();
 customers.saleCalc();
 // customers.saleHr.reduce(saleTotal());
-var ulEl = document.getElementById("storeStats");
+var ulEl = document.getElementById("storeStats1");
 
 for (var i = 0; i < hours.length; i++){
   // create the <li> element
@@ -104,7 +104,7 @@ customers2.randomizer();
 customers2.hourRandomizer();
 customers2.saleCalc();
 // customers.saleHr.reduce(saleTotal());
-var ulEl = document.getElementById("storeStats");
+var ulEl = document.getElementById("storeStats2");
 
 for (var i = 0; i < hours.length; i++){
   // create the <li> element
@@ -159,7 +159,7 @@ customers3.randomizer();
 customers3.hourRandomizer();
 customers3.saleCalc();
 // customers.saleHr.reduce(saleTotal());
-var ulEl = document.getElementById("storeStats");
+var ulEl = document.getElementById("storeStats3");
 
 for (var i = 0; i < hours.length; i++){
   // create the <li> element
@@ -214,7 +214,7 @@ customers4.randomizer();
 customers4.hourRandomizer();
 customers4.saleCalc();
 // customers.saleHr.reduce(saleTotal());
-var ulEl = document.getElementById("storeStats");
+var ulEl = document.getElementById("storeStats4");
 
 for (var i = 0; i < hours.length; i++){
   // create the <li> element
@@ -269,7 +269,7 @@ customers5.randomizer();
 customers5.hourRandomizer();
 customers5.saleCalc();
 // customers.saleHr.reduce(saleTotal());
-var ulEl = document.getElementById("storeStats");
+var ulEl = document.getElementById("storeStats5");
 
 for (var i = 0; i < hours.length; i++){
   // create the <li> element
