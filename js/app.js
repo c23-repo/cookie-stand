@@ -1,288 +1,136 @@
 'use strict';
 
-var hours = ['0600hrs', '0700hrs', '0800hrs', '0900hrs', '1000hrs', '1100hrs', '1200hrs', '1300hrs', '1400hrs', '1500hrs', '1600hrs', '1700hrs', '1800hrs', '1900hrs', '2000hrs'];
-var customers = {
-  store: '1st and Pike',
-  minCustHr: 23,
-  maxCustHr: 65,
-  customerHr: [],
-  avgCookieHr: 6.3,
-  saleHr: [],
-  saleTotal: 0,
-  // Picks a random number between min and max
-  randomizer: function(){
-    // line from MDN Math.random docs
-    // var min = Math.ceil(this.minCustHr);
-    // var max = Math.floor(this.maxCustHr);
-    return Math.floor(Math.random()*(this.maxCustHr - this.minCustHr + 1)) + this.minCustHr;
-  },
-  // Inputs random number into the Array at the given index
-  hourRandomizer: function(){
-    for (let i = 0; i < hours.length; i++){
-      this.customerHr.push(this.randomizer());
-    } 
-    console.log(this.customerHr);
-    return this.customerHr;
-  },
-  // Calculates the number of cookies sold per hour based on the number of customers at given index
-  saleCalc: function(){
-    for (let i = 0; i < hours.length; i++){
-      var oneHour = Math.ceil(this.customerHr[i] * this.avgCookieHr);
-      this.saleHr.push(oneHour);
-      // configure the total of the array
-      this.saleTotal += oneHour;
-    }
-    // console.log(this.saleTotal);
-  },
-  render: function(){
-    var ulEl = document.getElementById("storeStats1");
-    for (var i = 0; i < hours.length; i++){
-      // Create, content, append
-      var liEl = document.createElement('li');
-      liEl.textContent = `${hours[i]}: ${this.saleHr[i]} cookies`;
-      ulEl.appendChild(liEl);
-    }
-    // Create, content, append
-    liEl = document.createElement('li');
-    liEl.textContent = ` Total = ${this.saleTotal} cookies`;
-    ulEl.appendChild(liEl);
+var hours = ['6 AM', '7 AM', '8 AM', '9 AM', '10 AM', '11 AM', '12 PM', '1 PM', '2 PM', '3 PM', '4 PM', '5 PM', '6 PM', '7 PM', '8 PM'];
+var allCustomers = [];
+
+function Customers(storeName, minimumCustomer, maximumCustomer, cookieAvgPerHour) {
+  this.store = storeName;
+  this.minCustHr = minimumCustomer;
+  this.maxCustHr = maximumCustomer;
+  this.customerHr = [];
+  this.avgCookieHr = cookieAvgPerHour;
+  this.saleHr = [];
+  this.saleTotal = 0;
+  allCustomers.push(this);
+}
+
+new Customers('1st and Pike', 23, 65, 6.3);
+new Customers('SeaTac Airport', 3, 24, 1.2);
+new Customers('Seattle Center', 11, 38, 3.7);
+new Customers('Capitol Hill', 20, 38, 2.3);
+new Customers('Alki', 2, 16, 4.6);
+
+
+// Picks a random number between min and max
+Customers.prototype.randomizer = function () {
+  // line from MDN Math.random docs
+  return Math.floor(Math.random() * (this.maxCustHr - this.minCustHr + 1)) + this.minCustHr;
+}
+
+// Inputs random number of customers into the Array at the given index
+Customers.prototype.hourRandomizer = function () {
+  for (let i = 0; i < hours.length; i++) {
+    this.customerHr.push(this.randomizer(this.minCustHr, this.maxCustHr));
   }
+}
+
+// Calculates the number of cookies sold per hour based on the number of customers at given index. configured in class following the step of instructor Sam Hamm
+Customers.prototype.saleCalc = function () {
+  for (let i = 0; i < hours.length; i++) {
+    var oneHour = Math.ceil(this.customerHr[i] * this.avgCookieHr);
+    this.saleHr.push(oneHour);
+    // configure the total of the array
+    this.saleTotal += oneHour;
+  }
+  console.log(this.saleTotal);
+}
+var storeStatsTable = document.getElementById('storeStats');
+
+
+
+// Sums the total cookies for each store at a given hour
+var totalSalesPerHr = [];
+function salesPerHr() {
+  for (let i = 0; i < allCustomers.length; i++) {
+    totalSalesPerHr.push(allCustomers[i].saleHr);
+  }
+  console.log(totalSalesPerHr);
+  // The following line of code was from https://stackoverflow.com/questions/34458132/how-to-sum-elements-at-the-same-index-in-array-of-arrays-into-a-single-array
+  totalSalesPerHr = totalSalesPerHr.reduce((r, a) => a.map((b, i) => (r[i] || 0) + b), []);
+  console.log(totalSalesPerHr);
+}
+// gets the avg number of cookies sold per hour, by location, then adds to the total for a projected cookies reserve dependant on customer traffic
+var cookieReserve = []
+function reserve() {
+  for (let i = 0; i < allCustomers.length; i++) {
+    cookieReserve.push(Math.ceil((allCustomers[i].saleTotal / hours.length) + allCustomers[i].saleTotal))
+  }
+  //  projected cookies to keep on reserves
+  // var trEl = document.createElement('tr');
+  // var tdEl = document.createElement('td');
+  // tdEl = document.createElement('td');
+  // tdEl.textContent = cookieReserve;
+  // trEl.appendChild(tdEl);
+  // storeStatsTable.appendChild(trEl);
+  console.log(cookieReserve);
+}
+Customers.prototype.render = function () {
+  let trEl = document.createElement('tr');
+  // store location
+  let tdEl = document.createElement('td');
+  tdEl.textContent = this.store;
+  trEl.appendChild(tdEl);
+
+  for (var i = 0; i < hours.length; i++) {
+    // cookies sold content
+    tdEl = document.createElement('td');
+    tdEl.textContent = this.saleHr[i];
+    trEl.appendChild(tdEl);
+  }
+  // store total of cookies sold 
+  tdEl = document.createElement('td');
+  tdEl.textContent = this.saleTotal;
+  trEl.appendChild(tdEl);
+  storeStatsTable.appendChild(trEl);
 };
-
-// customers.randomizer();
-customers.hourRandomizer();
-customers.saleCalc();
-customers.render();
-// customers.saleHr.reduce(saleTotal());
-// var ulEl = document.getElementById("storeStats1");
-
-
- 
-console.log(customers);
-
-
-// // SeaTac Airport
-
-// var customers2 = {
-//   store: 'SeaTac Airport',
-//   minCustHr: 3,
-//   maxCustHr: 24,
-//   customerHr: [],
-//   avgCookieHr: 1.2,
-//   saleHr: [],
-//   // Picks a random number between min and max
-//   randomizer: function(){
-//     // line from MDN Math.random docs
-//     var min = Math.ceil(this.minCustHr);
-//     var max = Math.floor(this.maxCustHr);
-//     return Math.floor(Math.random()*(max - min + 1)) + min;
-//   },
-//   // Inputs random number into the Array at the given index
-//   hourRandomizer: function(){
-//     for (let i = 0; i < hours.length; i++){
-//       this.customerHr.push(this.randomizer());
-//     }
-//     return this.customerHr;
-//   },
-//   // Calculates the number of cookies sold per hour based on the number of customers at given index
-//   saleCalc: function(){
-//     for (let i = 0; i < hours.length; i++){
-//       this.saleHr.push(this.avgCookieHr * this.customerHr[i]);
-//       // rounding the decimal. got information from stackoverflow
-//       this.saleHr[i] = this.saleHr[i].toFixed(0);
-//     } 
-//     console.log(this.saleHr);
-//     return this.saleHr;
-//   },
-//   saleTotal: function (total, num){
-//     return total + num;
-//   },
-//   render: function(){},
-// };
-
-// customers2.randomizer();
-// customers2.hourRandomizer();
-// customers2.saleCalc();
-// // customers.saleHr.reduce(saleTotal());
-// var ulEl = document.getElementById("storeStats2");
-
-// for (var i = 0; i < hours.length; i++){
-//   // create the <li> element
-//   var liEl = document.createElement('li');
-//   //element content
-//   liEl.textContent = (hours[i] + ' = ' + customers2.saleHr[i] + ' cookies.');
-//   // put in DOM
-//   ulEl.appendChild(liEl);
-// };
-// console.log(customers2.saleHr);
-// liEl = document.createElement('li');
-// liEl.textContent = customers2.saleHr.reduce( (total, num)=> total + num );
-// ulEl.appendChild(liEl);
-
-// // Seattle Center
-// var customers3 = {
-//   store: 'Seattle Center',
-//   minCustHr: 11,
-//   maxCustHr: 38,
-//   customerHr: [],
-//   avgCookieHr: 3.7,
-//   saleHr: [],
-//   // Picks a random number between min and max
-//   randomizer: function(){
-//     // line from MDN Math.random docs
-//     var min = Math.ceil(this.minCustHr);
-//     var max = Math.floor(this.maxCustHr);
-//     return Math.floor(Math.random()*(max - min + 1)) + min;
-//   },
-//   // Inputs random number into the Array at the given index
-//   hourRandomizer: function(){
-//     for (let i = 0; i < hours.length; i++){
-//       this.customerHr.push(this.randomizer());
-//     }
-//     return this.customerHr;
-//   },
-//   // Calculates the number of cookies sold per hour based on the number of customers at given index
-//   saleCalc: function(){
-//     for (let i = 0; i < hours.length; i++){
-//       this.saleHr.push(this.avgCookieHr * this.customerHr[i]);
-//       // rounding the decimal. got information from stackoverflow
-//       this.saleHr[i] = this.saleHr[i].toFixed(0);
-//     } 
-//     console.log(this.saleHr);
-//     return this.saleHr;
-//   },
-//   saleTotal: function (total, num){
-//     return total + num;
-//   },
-// };
-
-// customers3.randomizer();
-// customers3.hourRandomizer();
-// customers3.saleCalc();
-// // customers.saleHr.reduce(saleTotal());
-// var ulEl = document.getElementById("storeStats3");
-
-// for (var i = 0; i < hours.length; i++){
-//   // create the <li> element
-//   var liEl = document.createElement('li');
-//   //element content
-//   liEl.textContent = (hours[i] + ' = ' + customers3.saleHr[i] + ' cookies.');
-//   // put in DOM
-//   ulEl.appendChild(liEl);
-// };
-// console.log(customers3.saleHr);
-// liEl = document.createElement('li');
-// liEl.textContent = customers3.saleHr.reduce( (total, num)=> total + num );
-// ulEl.appendChild(liEl);
-
-// // Capitol Hill
-// var customers4 = {
-//   store: 'Capitol Hill',
-//   minCustHr: 20,
-//   maxCustHr: 38,
-//   customerHr: [],
-//   avgCookieHr: 2.3,
-//   saleHr: [],
-//   // Picks a random number between min and max
-//   randomizer: function(){
-//     // line from MDN Math.random docs
-//     var min = Math.ceil(this.minCustHr);
-//     var max = Math.floor(this.maxCustHr);
-//     return Math.floor(Math.random()*(max - min + 1)) + min;
-//   },
-//   // Inputs random number into the Array at the given index
-//   hourRandomizer: function(){
-//     for (let i = 0; i < hours.length; i++){
-//       this.customerHr.push(this.randomizer());
-//     }
-//     return this.customerHr;
-//   },
-//   // Calculates the number of cookies sold per hour based on the number of customers at given index
-//   saleCalc: function(){
-//     for (let i = 0; i < hours.length; i++){
-//       this.saleHr.push(this.avgCookieHr * this.customerHr[i]);
-//       // rounding the decimal. got information from stackoverflow
-//       this.saleHr[i] = this.saleHr[i].toFixed(0);
-//     } 
-//     console.log(this.saleHr);
-//     return this.saleHr;
-//   },
-//   saleTotal: function (total, num){
-//     return total + num;
-//   },
-// };
-
-// customers4.randomizer();
-// customers4.hourRandomizer();
-// customers4.saleCalc();
-// // customers.saleHr.reduce(saleTotal());
-// var ulEl = document.getElementById("storeStats4");
-
-// for (var i = 0; i < hours.length; i++){
-//   // create the <li> element
-//   var liEl = document.createElement('li');
-//   //element content
-//   liEl.textContent = (hours[i] + ' = ' + customers4.saleHr[i] + ' cookies.');
-//   // put in DOM
-//   ulEl.appendChild(liEl);
-// };
-// console.log(customers4.saleHr);
-// liEl = document.createElement('li');
-// liEl.textContent = customers4.saleHr.reduce( (total, num)=> total + num );
-// ulEl.appendChild(liEl);
- 
-// // Alki
-// var customers5 = {
-//   store: 'Alki',
-//   minCustHr: 2,
-//   maxCustHr: 16,
-//   customerHr: [],
-//   avgCookieHr: 4.6,
-//   saleHr: [],
-//   // Picks a random number between min and max
-//   randomizer: function(){
-//     // line from MDN Math.random docs
-//     var min = Math.ceil(this.minCustHr);
-//     var max = Math.floor(this.maxCustHr);
-//     return Math.floor(Math.random()*(max - min + 1)) + min;
-//   },
-//   // Inputs random number into the Array at the given index
-//   hourRandomizer: function(){
-//     for (let i = 0; i < hours.length; i++){
-//       this.customerHr.push(this.randomizer());
-//     }
-//     return this.customerHr;
-//   },
-//   // Calculates the number of cookies sold per hour based on the number of customers at given index
-//   saleCalc: function(){
-//     for (let i = 0; i < hours.length; i++){
-//       this.saleHr.push(this.avgCookieHr * this.customerHr[i]);
-//       // rounding the decimal. got information from stackoverflow
-//       this.saleHr[i] = this.saleHr[i].toFixed(0);
-//     } 
-//     console.log(this.saleHr);
-//     return this.saleHr;
-//   },
-//   saleTotal: function (total, num){
-//     return total + num;
-//   },
-// };
-
-// customers5.randomizer();
-// customers5.hourRandomizer();
-// customers5.saleCalc();
-// customers.saleHr.reduce(saleTotal());
-var ulEl = document.getElementById("storeStats5");
-
-for (var i = 0; i < hours.length; i++){
-  // create the <li> element
-  var liEl = document.createElement('li');
-  //element content
-  liEl.textContent = (hours[i] + ' = ' + customers5.saleHr[i] + ' cookies.');
-  // put in DOM
-  ulEl.appendChild(liEl);
-};
-console.log(customers5.saleHr);
-liEl = document.createElement('li');
-liEl.textContent = customers5.saleHr.reduce( (total, num)=> total + num );
-ulEl.appendChild(liEl);
+function headerRow(){
+  var trEl = document.createElement('tr');
+  var thEl = document.createElement('th');
+  thEl.textContent = 'Location & Hours';
+  trEl.appendChild(thEl);
+  for (var i = 0; i < hours.length; i++){
+    thEl = document.createElement('th');
+    thEl.textContent = hours[i];
+    trEl.appendChild(thEl);
+  }
+  thEl = document.createElement('th');
+  thEl.textContent = 'Daily Location Total'
+  trEl.appendChild(thEl);
+  storeStatsTable.appendChild(trEl);
+}
+function footerRow(){
+  var trEl = document.createElement('tr');
+  var tfEl = document.createElement('td');
+  tfEl.textContent = 'Total All Locations';
+  trEl.appendChild(tfEl);
+  for (var i = 0; i < totalSalesPerHr.length; i++){
+    tfEl = document.createElement('td');
+    tfEl.textContent = totalSalesPerHr[i];
+    trEl.appendChild(tfEl);
+  }
+  storeStatsTable.appendChild(trEl);
+}
+// store selector
+function selector() {
+  for (let i = 0; i < allCustomers.length; i++) {
+    allCustomers[i].hourRandomizer();
+    allCustomers[i].saleCalc();
+    allCustomers[i].render();
+  }
+}
+headerRow();
+console.log(headerRow);
+selector(); //selects each store and runs all the functios
+salesPerHr(); //selects each index of all the sales array to get sale for the hour 
+reserve();
+footerRow();
