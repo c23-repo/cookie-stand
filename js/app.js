@@ -50,6 +50,7 @@ var storeStatsTable = document.getElementById('storeStats');
 
 // Sums the total cookies for each store at a given hour
 var totalSalesPerHr = [];
+var saleAll = 0;
 function salesPerHr() {
   for (let i = 0; i < allCustomers.length; i++) {
     totalSalesPerHr.push(allCustomers[i].saleHr);
@@ -58,6 +59,9 @@ function salesPerHr() {
   // The following line of code was from https://stackoverflow.com/questions/34458132/how-to-sum-elements-at-the-same-index-in-array-of-arrays-into-a-single-array
   totalSalesPerHr = totalSalesPerHr.reduce((r, a) => a.map((b, i) => (r[i] || 0) + b), []);
   console.log(totalSalesPerHr);
+  for ( let a = 0; a < totalSalesPerHr.length; a++){
+    saleAll += totalSalesPerHr[a];
+  }
 }
 // gets the avg number of cookies sold per hour, by location, then adds to the total for a projected cookies reserve dependant on customer traffic
 var cookieReserve = []
@@ -118,6 +122,9 @@ function footerRow() {
     tfEl.textContent = totalSalesPerHr[i];
     trEl.appendChild(tfEl);
   }
+  tfEl = document.createElement('td');
+  tfEl.textContent = saleAll;
+  trEl.appendChild(tfEl);
   storeStatsTable.appendChild(trEl);
 }
 // store selector
