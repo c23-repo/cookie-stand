@@ -93,12 +93,12 @@ Customers.prototype.render = function () {
   trEl.appendChild(tdEl);
   storeStatsTable.appendChild(trEl);
 };
-function headerRow(){
+function headerRow() {
   var trEl = document.createElement('tr');
   var thEl = document.createElement('th');
   thEl.textContent = 'Location & Hours';
   trEl.appendChild(thEl);
-  for (var i = 0; i < hours.length; i++){
+  for (var i = 0; i < hours.length; i++) {
     thEl = document.createElement('th');
     thEl.textContent = hours[i];
     trEl.appendChild(thEl);
@@ -108,12 +108,12 @@ function headerRow(){
   trEl.appendChild(thEl);
   storeStatsTable.appendChild(trEl);
 }
-function footerRow(){
+function footerRow() {
   var trEl = document.createElement('tr');
   var tfEl = document.createElement('td');
   tfEl.textContent = 'Total All Locations';
   trEl.appendChild(tfEl);
-  for (var i = 0; i < totalSalesPerHr.length; i++){
+  for (var i = 0; i < totalSalesPerHr.length; i++) {
     tfEl = document.createElement('td');
     tfEl.textContent = totalSalesPerHr[i];
     trEl.appendChild(tfEl);
