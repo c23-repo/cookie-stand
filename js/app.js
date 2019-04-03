@@ -34,7 +34,7 @@ Customers.prototype.hourRandomizer = function() {
   }
 }
 
-// Calculates the number of cookies sold per hour based on the number of customers at given index
+// Calculates the number of cookies sold per hour based on the number of customers at given index. configured in class following the step of instructor Sam Hamm
 Customers.prototype.saleCalc= function() {
   for (let i = 0; i < hours.length; i++) {
     var oneHour = Math.ceil(this.customerHr[i] * this.avgCookieHr);
@@ -44,20 +44,31 @@ Customers.prototype.saleCalc= function() {
   }
   console.log(this.saleTotal);
 }
+var storeStatsTable = document.getElementById('storeStats');
 
 Customers.prototype.render = function() {
-  var ulEl = document.getElementById("storeStats");
+  var trEl = document.createElement('tr');
+  // store location
+  var tdEl = document.createElement('td');
+  tdEl.textContent = this.store;
+  trEl.appendChild(tdEl);
+
   for (var i = 0; i < hours.length; i++) {
-    // Create, content, append
-    var liEl = document.createElement('li');
-    liEl.textContent = `${hours[i]}: ${this.saleHr[i]} cookies`;
-    ulEl.appendChild(liEl);
+  // cookies sold content
+  tdEl = document.createElement('td');
+  tdEl.textContent = this.saleHr[i];
+  trEl.appendChild(tdEl);
   }
-  // Create, content, append
-  liEl = document.createElement('li');
-  liEl.textContent = ` Total = ${this.saleTotal} cookies`;
-  ulEl.appendChild(liEl);
-}
+  // store total of cookies sold 
+ tdEl = document.createElement('td');
+ tdEl.textContent = this.saleTotal;
+ trEl.appendChild(tdEl);
+//  projected cookies to keep on reserves
+ tdEl = document.createElement('td');
+ tdEl.textContent = cookieReserve[i];
+ trEl.appendChild(tdEl);
+ storeStatsTable.appendChild(trEl);
+};
 // Sums the total cookies for each store at a given hour
 var totalSalesPerHr = [];
 function salesPerHr() {
@@ -69,6 +80,14 @@ function salesPerHr() {
   totalSalesPerHr = totalSalesPerHr.reduce((r, a) => a.map((b, i)=>(r[i] || 0) + b), []);
   console.log(totalSalesPerHr);
 }
+// gets the avg number of cookies sold per hour, by location, then adds to the total for a projected cookies reserve dependant on customer traffic
+var cookieReserve = []
+function reserve(){
+  for (let i = 0; i < allCustomers.length; i++){
+    cookieReserve.push(Math.ceil((allCustomers[i].saleTotal / hours.length) + allCustomers[i].saleTotal))
+  }
+  console.log(cookieReserve);
+}
 // store selector
 function selector(){
   for (let i = 0; i < allCustomers.length; i++){
@@ -77,6 +96,6 @@ function selector(){
     allCustomers[i].render();
   };
 }
-
-selector();
-salesPerHr();
+selector(); //selects each store and runs all the functios
+salesPerHr(); //selects each index of all the sales array to get sale for the hour 
+reserve();
