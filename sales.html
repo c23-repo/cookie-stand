@@ -10,12 +10,26 @@
 <body>
 
   <h1 id="companyName">Pat's Salmon Cookies</h1>
-  <form>
+  <form id="new-store">
     <fieldset>
       <legend>Add a new store</legend>
-      
+
+      <label for="storeName"> Location </label>
+      <input name = "storeName" type="text" placeholder="Name of location" required/>
+
+      <label for="minimumCustomer"> Minimum customers per hour </label>
+      <input name = "minimumCustomer" type="text" required>
+
+      <label for="maximumCustomer"> Maximum customers per hour </label>
+      <input name = "maximumCustomer" type="text" required>
+
+      <label for="cookieAvgPerHour"> Average cookies sold per hour </label>
+      <input name = "cookieAvgPerHour" type="text" required>
+
+      <button type="submit">Create New Store</button>
     </fieldset>
   </form>
+  <button id="clearNewStores"> Clear Locations</button>
   <table id="storeStats"></table>
 
 
