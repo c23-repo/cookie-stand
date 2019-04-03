@@ -46,7 +46,7 @@ Customers.prototype.saleCalc= function() {
 }
 
 Customers.prototype.render = function() {
-  var ulEl = document.getElementById("storeStats1");
+  var ulEl = document.getElementById("storeStats");
   for (var i = 0; i < hours.length; i++) {
     // Create, content, append
     var liEl = document.createElement('li');
@@ -58,6 +58,17 @@ Customers.prototype.render = function() {
   liEl.textContent = ` Total = ${this.saleTotal} cookies`;
   ulEl.appendChild(liEl);
 }
+// Sums the total cookies for each store at a given hour
+var totalSalesPerHr = [];
+function salesPerHr() {
+  for (let i = 0; i < allCustomers.length; i++) {
+    totalSalesPerHr.push(allCustomers[i].saleHr);
+  }
+  console.log(totalSalesPerHr);
+  // The following line of code was from https://stackoverflow.com/questions/34458132/how-to-sum-elements-at-the-same-index-in-array-of-arrays-into-a-single-array
+  totalSalesPerHr = totalSalesPerHr.reduce((r, a) => a.map((b, i)=>(r[i] || 0) + b), []);
+  console.log(totalSalesPerHr);
+}
 // store selector
 function selector(){
   for (let i = 0; i < allCustomers.length; i++){
@@ -68,4 +79,4 @@ function selector(){
 }
 
 selector();
-
+salesPerHr();
