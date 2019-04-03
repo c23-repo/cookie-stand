@@ -46,6 +46,8 @@ Customers.prototype.saleCalc = function () {
 }
 var storeStatsTable = document.getElementById('storeStats');
 
+
+
 // Sums the total cookies for each store at a given hour
 var totalSalesPerHr = [];
 var saleAll = 0;
