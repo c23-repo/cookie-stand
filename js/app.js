@@ -110,11 +110,11 @@ function headerRow(){
 }
 function footerRow(){
   var trEl = document.createElement('tr');
-  var tfEl = document.createElement('tf');
+  var tfEl = document.createElement('td');
   tfEl.textContent = 'Total All Locations';
   trEl.appendChild(tfEl);
   for (var i = 0; i < totalSalesPerHr.length; i++){
-    tfEl = document.createElement('tf');
+    tfEl = document.createElement('td');
     tfEl.textContent = totalSalesPerHr[i];
     trEl.appendChild(tfEl);
   }

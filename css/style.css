@@ -1,0 +1,14 @@
+#storeStats {
+  padding: 1.2em
+  border 5px;
+}
+ th{
+  padding: 1em;
+  border-style: double;
+  border-width: 5px;
+}
+tr,td{
+  padding: 1em;
+  border-style: solid;
+  border-width: 2px;
+}
