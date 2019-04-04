@@ -1,5 +1,7 @@
 'use strict';
 
+var newStore = document.getElementById('newStore');
+
 var hours = ['6 AM', '7 AM', '8 AM', '9 AM', '10 AM', '11 AM', '12 PM', '1 PM', '2 PM', '3 PM', '4 PM', '5 PM', '6 PM', '7 PM', '8 PM'];
 var allCustomers = [];
 
@@ -140,10 +142,40 @@ function selector() {
     allCustomers[i].render();
   }
 }
+function newStoreAdditions(event){
+  event.preventDefault();
+
+  var shop = event.target.storeName.value;
+  var min = parseInt(event.target.minimumCustomer.value);
+  var max = parseInt(event.target.maximumCustomer.value);
+  var avg = parseFloat(event.target.cookieAvgPerHour.value);
+  console.log(shop);
+  console.log(typeof min);
+  console.log(typeof max);
+  console.log(typeof avg);
+
+  var newCustomers = new Customers(shop, min, max, avg);
+
+  newCustomers.hourRandomizer();
+  newCustomers.saleCalc();
+  storeStatsTable.textContent= '';
+  headerRow();
+  for (let i = 0; i < allCustomers.length; i++) {
+    allCustomers[i].render();
+  }
+  totalSalesPerHr= [];
+  saleAll= 0;
+  salesPerHr();
+  footerRow();
+}
+
+newStore.addEventListener('submit', newStoreAdditions);
+
 
 headerRow();
-console.log(headerRow);
+console.log('headerRow');
 selector(); //selects each store and runs all the functios
 salesPerHr(); //selects each index of all the sales array to get sale for the hour
 reserve();
 footerRow();
+
