@@ -25,14 +25,14 @@ new Customers('Alki', 2, 16, 4.6);
 Customers.prototype.randomizer = function () {
   // line from MDN Math.random docs
   return Math.floor(Math.random() * (this.maxCustHr - this.minCustHr + 1)) + this.minCustHr;
-}
+};
 
 // Inputs random number of customers into the Array at the given index
 Customers.prototype.hourRandomizer = function () {
   for (let i = 0; i < hours.length; i++) {
     this.customerHr.push(this.randomizer(this.minCustHr, this.maxCustHr));
   }
-}
+};
 
 // Calculates the number of cookies sold per hour based on the number of customers at given index. configured in class following the step of instructor Sam Hamm
 Customers.prototype.saleCalc = function () {
@@ -43,7 +43,7 @@ Customers.prototype.saleCalc = function () {
     this.saleTotal += oneHour;
   }
   console.log(this.saleTotal);
-}
+};
 var storeStatsTable = document.getElementById('storeStats');
 
 
@@ -64,10 +64,10 @@ function salesPerHr() {
   }
 }
 // gets the avg number of cookies sold per hour, by location, then adds to the total for a projected cookies reserve dependant on customer traffic
-var cookieReserve = []
+var cookieReserve = [];
 function reserve() {
   for (let i = 0; i < allCustomers.length; i++) {
-    cookieReserve.push(Math.ceil((allCustomers[i].saleTotal / hours.length) + allCustomers[i].saleTotal))
+    cookieReserve.push(Math.ceil((allCustomers[i].saleTotal / hours.length) + allCustomers[i].saleTotal));
   }
   //  projected cookies to keep on reserves
   // var trEl = document.createElement('tr');
@@ -91,7 +91,7 @@ Customers.prototype.render = function () {
     tdEl.textContent = this.saleHr[i];
     trEl.appendChild(tdEl);
   }
-  // store total of cookies sold 
+  // store total of cookies sold
   tdEl = document.createElement('td');
   tdEl.textContent = this.saleTotal;
   trEl.appendChild(tdEl);
@@ -108,7 +108,7 @@ function headerRow() {
     trEl.appendChild(thEl);
   }
   thEl = document.createElement('th');
-  thEl.textContent = 'Daily Location Total'
+  thEl.textContent = 'Daily Location Total';
   trEl.appendChild(thEl);
   storeStatsTable.appendChild(trEl);
 }
@@ -138,6 +138,6 @@ function selector() {
 headerRow();
 console.log(headerRow);
 selector(); //selects each store and runs all the functios
-salesPerHr(); //selects each index of all the sales array to get sale for the hour 
+salesPerHr(); //selects each index of all the sales array to get sale for the hour
 reserve();
 footerRow();
